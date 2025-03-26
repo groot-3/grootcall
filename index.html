@@ -60,7 +60,8 @@
     <script>
         let localStream;
         let currentCall;
-        const peer = new Peer();
+        const myPeerId = Math.floor(1000 + Math.random() * 9000).toString(); // Generate 4-digit ID
+        const peer = new Peer(myPeerId);
         
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(stream => {
@@ -83,7 +84,7 @@
         
         function startCall() {
             const peerId = document.getElementById('peerId').value;
-            if (!peerId) return alert("Enter a Peer ID");
+            if (!peerId || peerId.length !== 4) return alert("Enter a valid 4-digit Peer ID");
             
             const call = peer.call(peerId, localStream);
             call.on('stream', remoteStream => {
